@@ -133,7 +133,7 @@ HTML_INTERFACE = """<!DOCTYPE html>
                     <i class="bi bi-file-earmark-pdf-fill me-1 text-warning"></i> PDF & TXT Ingestion Supported
                 </span>
                 <span class="badge bg-dark bg-opacity-25 text-white-50 px-3 py-2 rounded-pill small">
-                    <i class="bi bi-hdd-network me-1"></i> 127.0.0.1:8000
+                    <i class="bi bi-hdd-network me-1"></i> https://omnitask-ai.onrender.com/
                 </span>
             </div>
         </div>
