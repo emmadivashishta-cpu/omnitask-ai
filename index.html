@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniTask AI Dashboard</title>
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .gradient-brand { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: none; }
+        .badge-high { background-color: #ef4444; }
+        .badge-medium { background-color: #f59e0b; }
+        .badge-low { background-color: #10b981; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar gradient-brand mb-4">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1 fw-bold">OmniTask AI</span>
+            <span class="badge bg-light text-dark fw-semibold">Agentic Optimizer V1.0</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card card-shadow p-4 mb-4">
+                    <h5 class="fw-bold mb-3 text-dark">Document Ingestion</h5>
+                    <p class="text-muted small">Upload an unstructured roadmap or syllabus file to extract an actionable timeline.</p>
+                    <form id="uploadForm">
+                        <div class="mb-3">
+                            <input class="form-control form-control-sm" type="file" id="docFile" accept=".txt,.md" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm w-100 fw-semibold">Extract Milestones</button>
+                    </form>
+                </div>
+
+                <div class="card card-shadow p-4">
+                    <h5 class="fw-bold mb-2 text-dark">Project Summary</h5>
+                    <p id="summaryText" class="text-muted small italic">No project data ingested yet. Upload a document to generate an AI operational overview.</p>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card card-shadow p-4">
+                    <h5 class="fw-bold mb-4 text-dark">Live Operational Action Board</h5>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr class="small text-muted">
+                                    <th>Milestone Module</th>
+                                    <th>Actionable Item</th>
+                                    <th>Priority</th>
+                                    <th>Est. Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody id="taskTableBody">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4 small">Waiting for background ingestion pipeline context...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('docFile');
+            if (!fileInput.files.length) return;
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            const tableBody = document.getElementById('taskTableBody');
+            tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-primary py-4 small">Processing agent processing document stream...</td></tr>`;
+
+            try {
+                const response = await fetch('http://127.0.0', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('summaryText').innerText = data.project_summary;
+                    tableBody.innerHTML = '';
+                    
+                    data.action_items.forEach(item => {
+                        const priorityClass = item.priority.toLowerCase() === 'high' ? 'badge-high' : (item.priority.toLowerCase() === 'medium' ? 'badge-medium' : 'badge-low');
+                        tableBody.innerHTML += `
+                            <tr>
+                                <td class="fw-bold text-dark small">${item.milestone_name}</td>
+                                <td class="text-muted small">${item.task_title}</td>
+                                <td><span class="badge ${priorityClass}">${item.priority}</span></td>
+                                <td class="fw-semibold text-dark small">${item.estimated_hours}h</td>
+                            </tr>
+                        `;
+                    });
+                }
+            } catch (err) {
+                tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-danger py-4 small">Error connecting to local FastAPI agent server.</td></tr>`;
+            }
+        });
+    </script>
+</body>
+</html>
