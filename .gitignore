@@ -1,0 +1,22 @@
+# API Credentials and Core Tokens
+.env
+*.env
+secret.txt
+secrets.txt
+
+# Python Bytecode and System Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Local Python Environments
+venv/
+env/
+.env/
+ENV/
+
+# Operating System Metadata
+.DS_Store
+Thumbs.db
