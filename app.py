@@ -311,7 +311,7 @@ HTML_INTERFACE = """<!DOCTYPE html>
         const priorityFilter = document.getElementById('priorityFilter');
 
         // File Selection & Drag-and-Drop
-        fileInput.addEventListener('change', () => {
+        fileInput.addEventListener('change', () => { const statusDiv = document.getElementById("upload-status"); const clearBtn = document.getElementById("clear-file-btn"); if(fileInput.files.length > 0){ statusDiv.classList.remove("d-none"); statusDiv.classList.add("d-flex"); } clearBtn.onclick = (e) => { e.stopPropagation(); fileInput.value = ""; statusDiv.classList.remove("d-flex"); statusDiv.classList.add("d-none"); };
             if (fileInput.files.length > 0) {
                 const name = fileInput.files[0].name;
                 const icon = name.toLowerCase().endswith('.pdf') ? 'bi-file-earmark-pdf text-danger' : 'bi-file-earmark-text text-primary';
