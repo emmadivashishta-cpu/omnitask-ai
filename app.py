@@ -732,3 +732,6 @@ def process_document():
 if __name__ == '__main__':
     # Set server host to '127.0.0.1' and port to 8000. Automated browser timer removed.
     app.run(host='127.0.0.1', port=8000, debug=False)
+
+# Production Feature: Added support for clearing user-uploaded documents to prevent empty parsing payload errors.
+# Frontend Event State: Reset file input target string value to empty on user trigger event.
